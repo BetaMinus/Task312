@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>User editing</title>
+</head>
+<body>
+
+<h2>User editing</h2>
+<a th:href="@{/admin/users/{id}(id=${user.getId()})}"
+   th:text="${user.getLogin()}"> link
+</a>
+
+<form th:method="POST"
+      th:action="@{/admin/users/{id}/edit(id=${user.getId()})}"
+      th:object="${user}">
+
+    <input type="hidden"
+           th:field="*{id}"
+    />
+
+    <br>
+    <span> Enter new login </span>
+    <input type="text"
+           name="login"
+           th:field="*{login}"
+    />
+
+    <br>
+    <span> Enter new password </span>
+    <input type="text"
+           name="password"
+    />
+
+    <br>
+    <span> Enter new first name </span>
+    <input type="text"
+           th:field="*{firstName}"
+    />
+
+    <br>
+    <span> Enter new last name </span>
+    <input type="text"
+           th:field="*{lastName}"
+    />
+
+    <br>
+    <span> Enter new age </span>
+    <input type="number"
+           th:field="*{age}"
+    />
+
+    <br>
+    <span> Enter new email </span>
+    <input type="email"
+           th:field="*{email}"
+    />
+
+    <br>
+    <span > Change role </span>
+    <select size="2"
+            name="userRoles"
+            multiple>
+        <option value="ROLE_Admin">Admin</option>
+        <option value="ROLE_User">User</option>
+    </select>
+
+    <p>
+        <input type="submit"
+               value="Update user"/>
+</form>
+
+<p>
+<form th:action="@{/logout}" method="post">
+    <input type="submit" value="Sign Out"/>
+</form>
+
+</body>
+</html>
