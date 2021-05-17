@@ -1,5 +1,8 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+>
 <head>
     <meta charset="UTF-8">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css"
@@ -14,19 +17,33 @@
 </head>
 <body>
 <!-----------------------------------------------------------------------------------------------------HEADER---->
-<!--<sec:authorize access="hasRole('ROLE_Admin')">-->
-<!--    ADMIN ADMIN ADMIN ADMIN ADMIN ADMIN ADMIN ADMIN ADMIN ADMIN ADMIN ADMIN ADMIN ADMIN ADMIN ADMIN ADMIN ADMIN-->
-<!--    <br>-->
-<!--    ADMIN ADMIN ADMIN ADMIN ADMIN ADMIN ADMIN ADMIN ADMIN ADMIN ADMIN ADMIN ADMIN ADMIN ADMIN ADMIN ADMIN ADMIN-->
-<!--</sec:authorize>-->
-
-<br>
 <p></p>
-<% if (request.isUserInRole("Admin")) { %>
-<a href = "/test">Manager Report</a>
-<a href = "/test">Personnel Records</a>
-<% } %>
 
+<!--<div th:if="${ #authorization.expression('isAuthenticated()') and #strings.contains(#authentication.principal.authorities,'Admin')}">-->
+<!--    <span>This content is only shown to administrators.</span>-->
+<!--</div>-->
+
+<!--Logged user: -->
+<!--<span sec:authentication="name">Bob</span>-->
+
+<!--Roles: -->
+<!--<span sec:authentication="principal.authorities.">[ROLE_USER, ROLE_ADMIN]</span>-->
+
+<!--<div sec:authorize="isAuthenticated()">-->
+<!--    This content is only shown to authenticated users.-->
+<!--</div>-->
+
+<div sec:authorize="hasRole('Admin')">
+    CONTENT FOR ADMIN
+</div>
+
+<div sec:authorize="hasRole('User')">
+    CONTENT FOR USER
+</div>
+
+
+
+<p></p>
 
 <header>
     <div class="container-fluid">
@@ -58,7 +75,7 @@
 
             <div class="col-2">
                 <ul class="nav nav-pills flex-column">
-                    <li class="nav-item">
+                    <li class="nav-item" sec:authorize="hasRole('Admin')">
                         <button class="nav-link active"
                                 data-bs-toggle="pill"
                                 data-bs-target="#pills-admin"
@@ -81,7 +98,7 @@
 <!-----------------------------------------------------------------------------------------------------COL-10---->
             <div class="col-10">
                 <div class="tab-content">
-                    <div class="tab-pane fade show active" id="pills-admin">
+                    <div class="tab-pane fade show active" id="pills-admin" sec:authorize="hasRole('Admin')">
                         <h3>Admin panel</h3>
 
                             <ul class="nav nav-tabs">
@@ -334,11 +351,6 @@
         </div> <!--row-->
     </div> <!--container-fluid-->
 </main>
-
-
-
-
-
 
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"
