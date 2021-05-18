@@ -11,7 +11,6 @@ import java.util.List;
 @Table(name = "Users",
         uniqueConstraints = {
             @UniqueConstraint(name = "user_email_unique", columnNames = "email"),
-            @UniqueConstraint(name = "user_login_unique", columnNames = "login")
         }
         )
 public class User implements UserDetails {
@@ -39,10 +38,6 @@ public class User implements UserDetails {
     private String email;
 
     @Column(
-            name="login")
-    private String login;
-
-    @Column(
             name="password")
     private String password;
 
@@ -57,12 +52,11 @@ public class User implements UserDetails {
 
     public User() { }
 
-    public User(String firstName, String lastName, int age, String email, String login, String password) {
+    public User(String firstName, String lastName, int age, String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.age = age;
         this.email = email;
-        this.login = login;
         this.password = password;
     }
 
@@ -104,14 +98,6 @@ public class User implements UserDetails {
         this.email = email;
     }
 
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
     public String getPassword() {
         return password;
     }
@@ -136,14 +122,13 @@ public class User implements UserDetails {
                 ", lastName='" + lastName + '\'' +
                 ", age=" + age +
                 ", email='" + email + '\'' +
-                ", login='" + login + '\'' +
                 ", password='" + password + '\'' +
                 '}';
     }
 
     @Override
     public String getUsername() {
-        return login;
+        return email;
     }
 
     @Override

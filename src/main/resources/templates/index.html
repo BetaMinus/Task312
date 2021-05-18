@@ -1,8 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css"
@@ -12,95 +9,50 @@
     <link rel="stylesheet" href="C:/Users/pcjme/OneDrive/JavaCourse/JavaMent/PreProject/Chapter_3/Task312/src/main/resources/static/css/main.css">
     <link rel="stylesheet" href="css/main.css">
     <title>Title</title>
-
-
 </head>
 <body>
-<!-----------------------------------------------------------------------------------------------------HEADER---->
-<p></p>
-
-<!--<div th:if="${ #authorization.expression('isAuthenticated()') and #strings.contains(#authentication.principal.authorities,'Admin')}">-->
-<!--    <span>This content is only shown to administrators.</span>-->
-<!--</div>-->
-
-<!--Logged user: -->
-<!--<span sec:authentication="name">Bob</span>-->
-
-<!--Roles: -->
-<!--<span sec:authentication="principal.authorities.">[ROLE_USER, ROLE_ADMIN]</span>-->
-
-<!--<div sec:authorize="isAuthenticated()">-->
-<!--    This content is only shown to authenticated users.-->
-<!--</div>-->
-
-<div sec:authorize="hasRole('Admin')">
-    CONTENT FOR ADMIN
-</div>
-
-<div sec:authorize="hasRole('User')">
-    CONTENT FOR USER
-</div>
-
-
-
-<p></p>
 
 <header>
     <div class="container-fluid">
         <div class="row align-items-center">
-
             <div class="col text-light">
                     <span th:text="${loggedInUser.email}">userEmail</span>
                     <span> with roles:</span>
                     <span th:each="role, i: ${loggedInUser.roles}"
-                          th:text="!${i.last} ? ${role.roleName.substring(5)+','} : ${role.roleName.substring(5)}">Role Admin User
+                          th:text="!${i.last} ? ${role.roleName.substring(5)+','} : ${role.roleName.substring(5)}">Roles
                     </span>
             </div>
-
             <div class="col text-light" style="text-align: right">
                 <form th:action="@{/logout}" method="post">
                         <input class="btn text-light" type="submit" value="Logout"/>
                 </form>
             </div>
-
         </div>
     </div>
 </header>
-<!-----------------------------------------------------------------------------------------------------HEADER---->
-<!-----------------------------------------------------------------------------------------------------MAIN---->
 <main>
     <div class="container-fluid">
         <div class="row">
-<!-----------------------------------------------------------------------------------------------------COL-2---->
-
-            <div class="col-2">
-                <ul class="nav nav-pills flex-column">
+            <div class="col-2 vh-100">
+                <ul class="d-grid gap-2 nav nav-pills nav-fill">
                     <li class="nav-item" sec:authorize="hasRole('Admin')">
-                        <button class="nav-link active"
-                                data-bs-toggle="pill"
-                                data-bs-target="#pills-admin"
-                                type="button">
+                        <button class="btn btn-primary nav-link active" data-bs-toggle="pill" data-bs-target="#pills-admin" style="text-align: left">
                             Admin
                         </button>
                     </li>
 
                     <li class="nav-item">
-                        <button class="nav-link"
-                                data-bs-toggle="pill"
-                                data-bs-target="#pills-user"
-                                type="button">
+                        <button class="btn btn-primary nav-link" id="user-button" data-bs-toggle="pill" data-bs-target="#pills-user" style="text-align: left">
                             User
                         </button>
                     </li>
                 </ul>
             </div>
-<!-----------------------------------------------------------------------------------------------------/COL-2---->
-<!-----------------------------------------------------------------------------------------------------COL-10---->
-            <div class="col-10">
+
+            <div class="col-9">
                 <div class="tab-content">
                     <div class="tab-pane fade show active" id="pills-admin" sec:authorize="hasRole('Admin')">
                         <h3>Admin panel</h3>
-
                             <ul class="nav nav-tabs">
                                 <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#users_table">Users table</a></li>
                                 <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#new_user">New user</a></li>
@@ -109,7 +61,7 @@
                             <div class="tab-content">
                                 <div class="tab-pane fade show active" id="users_table">
                                     <table class="table table-striped">
-                                        <caption class="caption-top">All users</caption>
+                                        <caption class="caption-top fw-bold">All users</caption>
                                         <thead>
                                             <tr>
                                                 <th>Id</th>
@@ -117,7 +69,6 @@
                                                 <th>LastName</th>
                                                 <th>Age</th>
                                                 <th>Email</th>
-                                                <th>Password</th>
                                                 <th>Role</th>
                                                 <th>Edit</th>
                                                 <th>Delete</th>
@@ -130,7 +81,6 @@
                                                 <td th:text="${user.lastName}">LastName</td>
                                                 <td th:text="${user.age}">Age</td>
                                                 <td th:text="${user.email}">Email</td>
-                                                <td th:text="${user.password}">Email</td>
                                                 <td>
                                                     <span th:each="role, i: ${user.roles}"
                                                           th:text="!${i.last} ? ${role.roleName.substring(5)+','} : ${role.roleName.substring(5)}">Roles
@@ -202,7 +152,6 @@
                                                         </div>
                                                     </div>
                                                 </td>
-
                                                 <td>
                                                     <!-- Button trigger modal -->
                                                     <button class="btn btn-danger"
@@ -280,19 +229,16 @@
                                                           th:object="${newUser}">
 
                                                         <label class="form-label fw-bold">First name</label>
-                                                        <input class="form-control" type="text" th:field="*{firstName}">
+                                                        <input class="form-control bg-warning" type="text" th:field="*{firstName}">
 
                                                         <label class="form-label fw-bold">Last name</label>
-                                                        <input class="form-control" type="text" th:field="*{lastName}">
+                                                        <input class="form-control bg-warning" type="text" th:field="*{lastName}">
 
                                                         <label class="form-label fw-bold">Age</label>
                                                         <input class="form-control" type="number" th:field="*{age}">
 
-                                                        <label class="form-label fw-bold">Login</label>
-                                                        <input class="form-control" type="text" th:field="*{login}">
-
                                                         <label class="form-label fw-bold">Email</label>
-                                                        <input class="form-control" type="email" th:field="*{email}">
+                                                        <input class="form-control .bg-warning" type="email" th:field="*{email}" required>
 
                                                         <label class="form-label fw-bold">Password</label>
                                                         <input class="form-control" type="password" th:field="*{password}">
@@ -310,13 +256,13 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div><!--tab-content-->
+                            </div>
                     </div>
 
-                    <div class="tab-pane fade" id="pills-user">
+                    <div class="tab-pane fade show" id="pills-user">
                         <h3>User information page</h3>
                         <table class="table table-striped">
-                            <caption class="caption-top"><b>About user</b></caption>
+                            <caption class="caption-top fw-bold"><b>About user</b></caption>
                             <thead>
                                 <tr>
                                     <th>Id</th>
@@ -329,14 +275,14 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td th:text="${loggedInUser.getId()}">Id</td>
-                                    <td th:text="${loggedInUser.getFirstName()}">FirstName</td>
-                                    <td th:text="${loggedInUser.getLastName()}">LastName</td>
-                                    <td th:text="${loggedInUser.getAge()}">Age</td>
-                                    <td th:text="${loggedInUser.getEmail()}">Email</td>
+                                    <td th:text="${loggedInUser.id}">Id</td>
+                                    <td th:text="${loggedInUser.firstName}">FirstName</td>
+                                    <td th:text="${loggedInUser.lastName}">LastName</td>
+                                    <td th:text="${loggedInUser.age}">Age</td>
+                                    <td th:text="${loggedInUser.email}">Email</td>
                                     <td>
-                                        <span th:each="role, i: ${loggedInUser.getRoles()}"
-                                              th:text="!${i.last} ? ${role.getRoleName().substring(5)+','} : ${role.getRoleName().substring(5)}">Roles
+                                        <span th:each="role, i: ${loggedInUser.roles}"
+                                              th:text="!${i.last} ? ${role.roleName.substring(5)+','} : ${role.roleName.substring(5)}">Roles
                                         </span>
                                     </td>
                                 </tr>
@@ -344,20 +290,21 @@
                         </table>
                     </div>
                 </div>
-
-            </div> <!--col-10-->
-<!-----------------------------------------------------------------------------------------------------/COL-10---->
-
-        </div> <!--row-->
-    </div> <!--container-fluid-->
+            </div>
+        </div>
+    </div>
 </main>
 
+<script th:inline="javascript">
+    if(![[${#authorization.expression('hasRole(''ROLE_Admin'')')}]]){
+        document.getElementById('user-button').className = 'btn btn-primary nav-link active';
+        document.getElementById('pills-user').className = 'tab-pane fade show active';
+    }
+</script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8"
         crossorigin="anonymous">
 </script>
-
-
 </body>
 </html>

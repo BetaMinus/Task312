@@ -29,7 +29,7 @@ public class IndexController {
         this.roleService = roleService;
     }
 
-    @GetMapping(path = "/index")
+    @GetMapping(path = "")
     public String getIndex(Model model, Principal principal) {
         model.addAttribute("loggedInUser", (User) ((Authentication) principal).getPrincipal());
         model.addAttribute("usersList", userService.readAll());
@@ -46,7 +46,7 @@ public class IndexController {
         }
         user.setRoles(list);
         userService.create(user);
-        return "redirect:/index";
+        return "redirect:/";
     }
 
     @PostMapping(path = "/admin/edit")
@@ -65,9 +65,6 @@ public class IndexController {
         if (!request.getParameter("email").isEmpty()) {
             user.setEmail(request.getParameter("email"));
         }
-        if (!request.getParameter("password").isEmpty()) {
-            user.setPassword(request.getParameter("password"));
-        }
         String[] roles = request.getParameterValues("roles");
         if (roles != null) {
             List<Role> list = new ArrayList<>();
@@ -76,18 +73,18 @@ public class IndexController {
             }
             user.setRoles(list);
         }
-
-        userService.update(user);
-        return "redirect:/index";
+        if (!request.getParameter("password").isEmpty()) {
+            user.setPassword(request.getParameter("password"));
+            userService.create(user);
+        } else {
+            userService.update(user);
+        }
+        return "redirect:/";
     }
 
-    @PostMapping(
-            path = "/admin/users/{id}/delete")
+    @PostMapping(path = "/admin/users/{id}/delete")
     public String deleteUser(@PathVariable("id") long id) {
         userService.delete(userService.readById(id).get());
-        return "redirect:/index";
+        return "redirect:/";
     }
-
-
-
 }

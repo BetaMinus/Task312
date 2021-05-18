@@ -41,6 +41,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public void update(User user) {
+
         userRepository.save(user);
     }
 
@@ -51,6 +52,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        return userRepository.findByLogin(s);
+        return userRepository.findByEmail(s);
     }
 }
