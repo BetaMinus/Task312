@@ -17,12 +17,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Controller
-public class MainController {
+public class AdminController {
     private final UserService userService;
     private final RoleService roleService;
 
     @Autowired
-    public MainController(UserService userService, RoleService roleService) {
+    public AdminController(UserService userService, RoleService roleService) {
         this.userService = userService;
         this.roleService = roleService;
     }
@@ -30,7 +30,9 @@ public class MainController {
     @GetMapping(path = "")
     public String getIndex(Model model, Principal principal) {
         model.addAttribute("loggedInUser", (User) ((Authentication) principal).getPrincipal());
-        model.addAttribute("usersList", userService.readAll());
+        if (((Authentication) principal).getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_Admin"))) {
+            model.addAttribute("usersList", userService.readAll());
+        }
         return "index.html";
     }
 
