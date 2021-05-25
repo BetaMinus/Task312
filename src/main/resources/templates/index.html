@@ -87,6 +87,8 @@
                                                     </span>
                                                 </td>
 
+
+
                                                 <td>
                                                     <!-- Button trigger modal -->
                                                     <button class="btn btn-info"
@@ -111,30 +113,55 @@
                                                                             <div class="col-5">
                                                                                 <form th:action="@{/admin/edit}"
                                                                                       th:attr="id='editForm' + ${user.id}"
-                                                                                      th:method="post">
+                                                                                      th:method="post"
+                                                                                      th:object="${user}">
 
-                                                                                    <input class="form-control" type="text" name="id" th:attr="value=${user.id}" hidden>
+                                                                                    <input class="form-control"
+                                                                                           type="number"
+                                                                                           name="id"
+                                                                                           th:value="${user.id}"
+                                                                                           hidden>
 
                                                                                     <label class="form-label text-center fw-bold">Id</label>
-                                                                                    <input class="form-control" type="text" name="id" th:attr="value=${user.id}" disabled>
+                                                                                    <input class="form-control"
+                                                                                           type="number"
+                                                                                           name="id"
+                                                                                           th:value="${user.id}"
+                                                                                           disabled>
 
                                                                                     <label class="form-label text-center fw-bold">First Name</label>
-                                                                                    <input class="form-control" type="text" name="firstName" th:attr="placeholder=${user.firstName}">
+                                                                                    <input class="form-control"
+                                                                                           type="text"
+                                                                                           name="firstName"
+                                                                                           th:value="${user.firstName}">
 
-                                                                                    <label class="form-label text-center fw-bold">Last name</label>
-                                                                                    <input class="form-control" type="text" name="lastName" th:attr="placeholder=${user.lastName}">
+                                                                                    <label class="form-label text-center fw-bold">Last Name</label>
+                                                                                    <input class="form-control"
+                                                                                           type="text"
+                                                                                           name="lastName"
+                                                                                           th:value="${user.lastName}">
 
                                                                                     <label class="form-label text-center fw-bold">Age</label>
-                                                                                    <input class="form-control" type="text" name="age" th:attr="placeholder=${user.age}">
+                                                                                    <input class="form-control"
+                                                                                           type="number"
+                                                                                           name="age"
+                                                                                           th:value="${user.age}">
 
                                                                                     <label class="form-label text-center fw-bold">Email</label>
-                                                                                    <input class="form-control" type="text" name="email" th:attr="placeholder=${user.email}">
+                                                                                    <input class="form-control"
+                                                                                           type="text"
+                                                                                           name="email"
+                                                                                           th:value="${user.email}">
 
                                                                                     <label class="form-label text-center fw-bold">Password</label>
-                                                                                    <input class="form-control" type="text" name="password">
+                                                                                    <input class="form-control"
+                                                                                           type="text"
+                                                                                           name="password">
 
-                                                                                    <label class="form-label text-center fw-bold">Role</label>
-                                                                                    <select class="form-control" multiple size="2" name="roles">
+                                                                                    <label class="form-label fw-bold">Role</label>
+                                                                                    <select class="form-select" size="2"
+                                                                                            name="userRoles"
+                                                                                            multiple>
                                                                                         <option value="ROLE_Admin">Admin</option>
                                                                                         <option value="ROLE_User">User</option>
                                                                                     </select>
@@ -152,6 +179,8 @@
                                                         </div>
                                                     </div>
                                                 </td>
+
+
                                                 <td>
                                                     <!-- Button trigger modal -->
                                                     <button class="btn btn-danger"
@@ -225,22 +254,23 @@
                                             <div class="col-5">
                                                 <div>
                                                     <form th:method="POST"
-                                                          th:action="@{/admin/create}">
+                                                          th:action="@{/admin/create}",
+                                                          th:object="${newUser}">
 
                                                         <label class="form-label fw-bold">First name</label>
-                                                        <input class="form-control bg-warning" type="text" name="firstName">
+                                                        <input class="form-control bg-warning" type="text" th:field="*{firstName}">
 
                                                         <label class="form-label fw-bold">Last name</label>
-                                                        <input class="form-control bg-warning" type="text" name="lastName">
+                                                        <input class="form-control bg-warning" type="text" th:field="*{lastName}">
 
                                                         <label class="form-label fw-bold">Age</label>
-                                                        <input class="form-control" type="number" name="age">
+                                                        <input class="form-control" type="number" th:field="*{age}">
 
                                                         <label class="form-label fw-bold">Email</label>
-                                                        <input class="form-control .bg-warning" type="email" name="email" required>
+                                                        <input class="form-control .bg-warning" type="email" th:field="*{email}" required>
 
                                                         <label class="form-label fw-bold">Password</label>
-                                                        <input class="form-control" type="password" name="password">
+                                                        <input class="form-control" type="password" th:field="*{password}">
 
                                                         <label class="form-label fw-bold">Role</label>
                                                         <select class="form-select" size="2" name="userRoles" multiple required>

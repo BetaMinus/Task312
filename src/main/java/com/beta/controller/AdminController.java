@@ -7,14 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
-import java.util.HashMap;
-import java.util.Map;
 
 @Controller
 public class AdminController {
@@ -32,35 +27,21 @@ public class AdminController {
         model.addAttribute("loggedInUser", (User) ((Authentication) principal).getPrincipal());
         if (((Authentication) principal).getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_Admin"))) {
             model.addAttribute("usersList", userService.readAll());
+            model.addAttribute("newUser", new User());
         }
         return "index.html";
     }
 
     @PostMapping(path = "/admin/create")
-    public String create(HttpServletRequest request) {
-        Map<String, String> params = new HashMap<>();
-        params.put("id", request.getParameter("id"));
-        params.put("firstName",request.getParameter("firstName"));
-        params.put("lastName",request.getParameter("lastName"));
-        params.put("age",request.getParameter("age"));
-        params.put("email",request.getParameter("email"));
-        params.put("password",request.getParameter("password"));
-        String[] userRoles = request.getParameterValues("userRoles");
-        userService.create(params, userRoles);
+    public String create(@ModelAttribute("newUser") User user, @RequestParam(value = "userRoles", required = true) String[] roles) {
+        userService.create(user, roles);
         return "redirect:/";
     }
 
     @PostMapping(path = "/admin/edit")
-    public String editUser(HttpServletRequest request) {
-        Map<String, String> params = new HashMap<>();
-        params.put("id", request.getParameter("id"));
-        params.put("firstName",request.getParameter("firstName"));
-        params.put("lastName",request.getParameter("lastName"));
-        params.put("age",request.getParameter("age"));
-        params.put("email",request.getParameter("email"));
-        params.put("password",request.getParameter("password"));
-        String[] roles = request.getParameterValues("roles");
-        userService.update(params, roles);
+    public String testEditUser(@ModelAttribute("user") User user,
+                               @RequestParam(value = "userRoles", required = false) String[] roles) {
+        userService.update(user, roles);
         return "redirect:/";
     }
 
