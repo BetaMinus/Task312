@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -30,54 +29,31 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public void create(Map<String, String> params, String[] roles) {
-        User user = new User();
-        if (!params.get("firstName").isEmpty()) {
-            user.setFirstName(params.get("firstName"));
-        }
-        if (!params.get("lastName").isEmpty()) {
-            user.setLastName(params.get("lastName"));
-        }
-        if (!params.get("age").isEmpty()) {
-            user.setAge(Integer.parseInt(params.get("age")));
-        }
-        if (!params.get("email").isEmpty()) {
-            user.setEmail(params.get("email"));
-        }
-        if (!params.get("password").isEmpty()) {
-            user.setPassword(passwordEncoder.encode(params.get("password")));
-        }
+    public void create(User user, String[] roles) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRoles(Arrays.stream(roles)
                 .map(role ->roleService.findByRoleName(role).get())
                 .collect(Collectors.toList()));
         userRepository.save(user);
-        }
+    }
 
     @Override
-    public void update(Map<String, String> params, String[] roles) {
-        User user = userRepository.findById(Long.parseLong(params.get("id"))).get();
-        if (!params.get("firstName").isEmpty()) {
-            user.setFirstName(params.get("firstName"));
+    public void update(User user, String[] roles) {
+        if (user.getPassword().isEmpty()) {
+            user.setPassword(userRepository.findById(user.getId()).get().getPassword());
+        } else {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
         }
-        if (!params.get("lastName").isEmpty()) {
-            user.setLastName(params.get("lastName"));
-        }
-        if (!params.get("age").isEmpty()) {
-            user.setAge(Integer.parseInt(params.get("age")));
-        }
-        if (!params.get("email").isEmpty()) {
-            user.setEmail(params.get("email"));
-        }
-        if (!params.get("password").isEmpty()) {
-            user.setPassword(passwordEncoder.encode(params.get("password")));
-        }
+
         if (roles != null) {
             user.setRoles(Arrays.stream(roles)
                     .map(role ->roleService.findByRoleName(role).get())
                     .collect(Collectors.toList()));
+        } else {
+            user.setRoles(userRepository.findById(user.getId()).get().getRoles());
         }
         userRepository.save(user);
-        }
+    }
 
     @Override
     public Optional<User> readById(long id) {
@@ -95,7 +71,5 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        return userRepository.findByEmail(s);
-    }
+    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException { return userRepository.findByEmail(s); }
 }

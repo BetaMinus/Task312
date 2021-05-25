@@ -9,9 +9,9 @@ import java.util.Optional;
 
 public interface UserService {
 
-    void create(Map<String, String> params, String[] roles);
+    void create(User user, String[] roles);
     Optional<User> readById(long id);
     List<User> readAll();
-    void update(Map<String, String> params, String[] roles);
+    void update(User user, String[] roles);
     void delete (User user);
 }
